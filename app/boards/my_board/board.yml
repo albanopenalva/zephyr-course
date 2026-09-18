@@ -1,0 +1,9 @@
+board:
+  name: my_board
+  full_name: My Board From Scratch
+  vendor: albano
+  socs:
+  - name: 'nrf5340'
+    variants:
+    - name: 'ns'
+      cpucluster: 'cpuapp'
