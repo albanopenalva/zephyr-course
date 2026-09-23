@@ -1,12 +1,24 @@
 #include <zephyr/drivers/sensor.h>
 #include <zephyr/logging/log.h>
 #include <zephyr/drivers/gpio.h>
+#include "our_driver.h"
 
 #define DT_DRV_COMPAT our_driver
 
 LOG_MODULE_REGISTER(our_driver, LOG_LEVEL_INF);
 
 static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(DT_ALIAS(led0), gpios);
+
+static struct our_driver_data {
+    int counter;
+} driver_data;
+
+int our_driver_counter_increment(const struct device *dev) {
+    struct our_driver_data *data = dev->data;
+    data->counter++;
+    LOG_INF("Counter incremented to: %d", data->counter);
+    return data->counter;
+}
 
 static int channel_get_my_impl(const struct device *dev, 
                                 enum sensor_channel chan,
@@ -36,6 +48,6 @@ static int init(const struct device *dev){
     return 0;
 }
 
-#define DEV_INST(inst) DEVICE_DT_INST_DEFINE(inst, init, NULL, NULL, NULL, POST_KERNEL, 80, &our_driver_api);
+#define DEV_INST(inst) DEVICE_DT_INST_DEFINE(inst, init, NULL, &driver_data, NULL, POST_KERNEL, 80, &our_driver_api);
 
 DT_INST_FOREACH_STATUS_OKAY(DEV_INST);
