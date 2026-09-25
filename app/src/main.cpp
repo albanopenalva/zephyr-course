@@ -12,15 +12,15 @@ int main(void)
     bool led_state = true;
 
     while (1) {
-        if (led_state) {
-            sensor_channel_get(dev, SENSOR_CHAN_GREEN, &val);
-        } else {
-            sensor_sample_fetch(dev);
-        }
+        // if (led_state) {
+        //     sensor_channel_get(dev, SENSOR_CHAN_GREEN, &val);
+        // } else {
+        //     sensor_sample_fetch(dev);
+        // }
 
-        our_driver_counter_increment(dev);
+        // our_driver_counter_increment(dev);
 
-        led_state = !led_state;
+        // led_state = !led_state;
         k_msleep(CONFIG_APP_HEARTBEAT_PERIOD_MS );
     }
     return 0;
