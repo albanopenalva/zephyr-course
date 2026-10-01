@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 
-int our_driver_counter_increment(const struct device *dev);
+int our_driver_counter_increment(const struct device *dev, int increment);
 
 #ifdef __cplusplus
 }

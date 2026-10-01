@@ -13,9 +13,10 @@ static struct our_driver_data {
     int counter;
 } driver_data;
 
-int our_driver_counter_increment(const struct device *dev) {
+int our_driver_counter_increment(const struct device *dev, 
+                                 int increment){
     struct our_driver_data *data = dev->data;
-    data->counter++;
+    data->counter += increment;
     LOG_INF("Counter incremented to: %d", data->counter);
     return data->counter;
 }

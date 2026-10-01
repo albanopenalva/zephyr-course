@@ -1,5 +1,6 @@
 #include <zephyr/shell/shell.h>
 #include <zephyr/drivers/sensor.h>
+#include <stdlib.h>
 #include "our_driver.h"
 
 static int cmd_channel_get_handler(const struct shell *shell, size_t argc, char **argv){
@@ -42,10 +43,32 @@ static int cmd_info_handler(const struct shell *shell, size_t argc, char **argv)
     return 0;
 }
 
+static int cmd_increment_handler(const struct shell *shell, size_t argc, char **argv){
+    const struct device *dev = device_get_binding(argv[1]);
+    if (!dev) {
+        shell_error(shell, "Device not found");
+        return -EFAULT;
+    }
+    char *endptr;
+    long increment = strtol(argv[2], &endptr, 10);
+    if (*endptr != '\0' || increment <= 0) {
+        shell_error(shell, "Increment must be a positive integer");
+        return -EINVAL;
+    }
+    int count = our_driver_counter_increment(dev, (int)increment);
+    if (count < 0) {
+        shell_error(shell, "Failed to increment counter");
+        return -EFAULT;
+    }
+    shell_info(shell, "Counter incremented: %d", count);
+    return 0;
+}
+
 SHELL_STATIC_SUBCMD_SET_CREATE(our_driver_subcmd,
     SHELL_CMD_ARG(read, NULL, "Get the channel value", cmd_channel_get_handler, 2, 0),
     SHELL_CMD_ARG(fetch, NULL, "Fetch a sample", cmd_sample_fetch_handler, 2, 0),
     SHELL_CMD_ARG(info, NULL, "Get driver info", cmd_info_handler, 2, 0),
+    SHELL_CMD_ARG(increment, NULL, "Increment the counter", cmd_increment_handler, 3, 0),
     SHELL_SUBCMD_SET_END
 );
 
