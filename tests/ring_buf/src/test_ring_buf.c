@@ -43,11 +43,10 @@ ZTEST(ring_buf_init, test_fresh_state)
 
 ZTEST(ring_buf_init, test_reinit_clears_state)
 {
-	/* TODO(l8-task1): Push a value, call rb_init(4) again, then
-	 * verify the buffer is empty and count is 0.
-	 * See TEST_SPEC.md "Suite ring_buf_init" #2.
-	 */
-	ztest_test_skip();
+	zassert_equal(rb_push(99), 0, "Push before reinitialization must succeed");
+	zassert_equal(rb_init(4), 0, "Reinitialization must succeed");
+	zassert_true(rb_is_empty(), "Reinitialized buffer must be empty");
+	zassert_equal(rb_count(), 0, "Reinitialized buffer count must be 0");
 }
 
 /*
@@ -61,28 +60,38 @@ ZTEST_SUITE(ring_buf_push_pop, NULL, NULL, before, NULL, NULL);
 
 ZTEST(ring_buf_push_pop, test_single_push_pop)
 {
-	/* TODO(l8-task1): rb_push(42), rb_pop(&v) -> v == 42, buffer empty after.
-	 * See TEST_SPEC.md "Suite ring_buf_push_pop" #1.
-	 */
-	ztest_test_skip();
+	int v;
+
+	zassert_equal(rb_push(42), 0, "Push must succeed");
+	zassert_equal(rb_pop(&v), 0, "Pop must succeed");
+	zassert_equal(v, 42, "Popped value must be 42");
+	zassert_true(rb_is_empty(), "Buffer must be empty after pop");
 }
 
 ZTEST(ring_buf_push_pop, test_fifo_order)
 {
-	/* TODO(l8-task1): rb_push(1), rb_push(2), rb_push(3); pop three times
-	 * and verify the values come out as 1, 2, 3 in that order.
-	 * See TEST_SPEC.md "Suite ring_buf_push_pop" #2.
-	 */
-	ztest_test_skip();
+	int v1, v2, v3;
+
+	zassert_equal(rb_push(1), 0, "Push 1 must succeed");
+	zassert_equal(rb_push(2), 0, "Push 2 must succeed");
+	zassert_equal(rb_push(3), 0, "Push 3 must succeed");
+	zassert_equal(rb_pop(&v1), 0, "Pop 1 must succeed");
+	zassert_equal(rb_pop(&v2), 0, "Pop 2 must succeed");
+	zassert_equal(rb_pop(&v3), 0, "Pop 3 must succeed");
+	zassert_equal(v1, 1, "First popped value must be 1");
+	zassert_equal(v2, 2, "Second popped value must be 2");
+	zassert_equal(v3, 3, "Third popped value must be 3");
+	zassert_true(rb_is_empty(), "Buffer must be empty after pop");
 }
 
 ZTEST(ring_buf_push_pop, test_push_full_returns_enospc)
 {
-	/* TODO(l8-task1): Fill the buffer to its capacity of 4, then push
-	 * one more value -> -ENOSPC.
-	 * See TEST_SPEC.md "Suite ring_buf_push_pop" #3.
-	 */
-	ztest_test_skip();
+	zassert_equal(rb_push(1), 0, "Push 1 must succeed");
+	zassert_equal(rb_push(2), 0, "Push 2 must succeed");
+	zassert_equal(rb_push(3), 0, "Push 3 must succeed");
+	zassert_equal(rb_push(4), 0, "Push 4 must succeed");
+	zassert_equal(rb_push(99), -ENOSPC, "Push 5 must fail");
+	zassert_equal(rb_count(), 4, "Buffer count must be 4 after full push");
 }
 
 /*
@@ -96,25 +105,27 @@ ZTEST_SUITE(ring_buf_boundaries, NULL, NULL, before, NULL, NULL);
 
 ZTEST(ring_buf_boundaries, test_peek_does_not_consume)
 {
-	/* TODO(l8-task1): rb_push(7); rb_peek(&v) -> v == 7; rb_peek(&v) again
-	 * -> v == 7; rb_count() still == 1.
-	 * See TEST_SPEC.md "Suite ring_buf_boundaries" #1.
-	 */
-	ztest_test_skip();
+	int v;
+
+	zassert_equal(rb_push(7), 0, "Push must succeed");
+	zassert_equal(rb_peek(&v), 0, "Peek must succeed");
+	zassert_equal(v, 7, "Peeked value must be 7");
+	zassert_equal(rb_peek(&v), 0, "Peek must succeed again");
+	zassert_equal(v, 7, "Peeked value must still be 7");
+	zassert_equal(rb_count(), 1, "Buffer count must still be 1 after peek");
 }
 
 ZTEST(ring_buf_boundaries, test_pop_null_returns_einval)
 {
-	/* TODO(l8-task1): rb_pop(NULL) -> -EINVAL.
-	 * See TEST_SPEC.md "Suite ring_buf_boundaries" #2.
-	 */
-	ztest_test_skip();
+	zassert_equal(rb_pop(NULL), -EINVAL, "Pop with NULL must return -EINVAL");
 }
 
 ZTEST(ring_buf_boundaries, test_is_full_after_fill)
 {
-	/* TODO(l8-task1): push 4 values -> rb_is_full() == true, rb_count() == 4.
-	 * See TEST_SPEC.md "Suite ring_buf_boundaries" #3.
-	 */
-	ztest_test_skip();
+	zassert_equal(rb_push(1), 0, "Push 1 must succeed");
+	zassert_equal(rb_push(2), 0, "Push 2 must succeed");
+	zassert_equal(rb_push(3), 0, "Push 3 must succeed");
+	zassert_equal(rb_push(4), 0, "Push 4 must succeed");
+	zassert_true(rb_is_full(), "Buffer must be full after 4 pushes");
+	zassert_equal(rb_count(), 4, "Buffer count must be 4 after full push");
 }

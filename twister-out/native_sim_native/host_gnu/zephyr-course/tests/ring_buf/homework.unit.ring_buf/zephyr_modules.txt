@@ -1,0 +1,4 @@
+"cmsis_6":"/home/penia/zephyr_workspace/deps/modules/hal/cmsis_6":"${ZEPHYR_CMSIS_6_CMAKE_DIR}"
+"hal_espressif":"/home/penia/zephyr_workspace/deps/modules/hal/espressif":"${ZEPHYR_HAL_ESPRESSIF_CMAKE_DIR}"
+"hal_nordic":"/home/penia/zephyr_workspace/deps/modules/hal/nordic":"${ZEPHYR_HAL_NORDIC_CMAKE_DIR}"
+"hal_stm32":"/home/penia/zephyr_workspace/deps/modules/hal/stm32":"/home/penia/zephyr_workspace/deps/modules/hal/stm32"

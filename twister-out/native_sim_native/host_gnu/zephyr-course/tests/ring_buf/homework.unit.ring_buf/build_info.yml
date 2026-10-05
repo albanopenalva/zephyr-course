@@ -1,0 +1,45 @@
+cmake:
+  application:
+    configuration-dir: '/home/penia/zephyr_workspace/zephyr-course/tests/ring_buf'
+    source-dir: '/home/penia/zephyr_workspace/zephyr-course/tests/ring_buf'
+  board:
+    name: 'native_sim'
+    path:
+     - '/home/penia/zephyr_workspace/deps/zephyr/boards/native/native_sim'
+    qualifiers: 'native'
+    revision: ''
+  devicetree:
+    bindings-dirs:
+     - '/home/penia/zephyr_workspace/deps/zephyr/dts/bindings'
+    files:
+     - '/home/penia/zephyr_workspace/deps/zephyr/boards/native/native_sim/native_sim.dts'
+    include-dirs:
+     - '/home/penia/zephyr_workspace/deps/modules/hal/stm32/dts'
+     - '/home/penia/zephyr_workspace/deps/zephyr/include'
+     - '/home/penia/zephyr_workspace/deps/zephyr/include/zephyr'
+     - '/home/penia/zephyr_workspace/deps/zephyr/dts/common'
+     - '/home/penia/zephyr_workspace/deps/zephyr/dts/vendor'
+     - '/home/penia/zephyr_workspace/deps/zephyr/dts/rx'
+     - '/home/penia/zephyr_workspace/deps/zephyr/dts/x86'
+     - '/home/penia/zephyr_workspace/deps/zephyr/dts/xtensa'
+     - '/home/penia/zephyr_workspace/deps/zephyr/dts/sparc'
+     - '/home/penia/zephyr_workspace/deps/zephyr/dts/riscv'
+     - '/home/penia/zephyr_workspace/deps/zephyr/dts/posix'
+     - '/home/penia/zephyr_workspace/deps/zephyr/dts/arm64'
+     - '/home/penia/zephyr_workspace/deps/zephyr/dts/arm'
+     - '/home/penia/zephyr_workspace/deps/zephyr/dts/arc'
+     - '/home/penia/zephyr_workspace/deps/zephyr/dts'
+  kconfig:
+    files:
+     - '/home/penia/zephyr_workspace/deps/zephyr/boards/native/native_sim/native_sim_defconfig'
+     - '/home/penia/zephyr_workspace/zephyr-course/tests/ring_buf/prj.conf'
+     - '/home/penia/zephyr_workspace/zephyr-course/twister-out/native_sim_native/host_gnu/zephyr-course/tests/ring_buf/homework.unit.ring_buf/zephyr/misc/generated/extra_kconfig_options.conf'
+    user-files:
+     - '/home/penia/zephyr_workspace/zephyr-course/tests/ring_buf/prj.conf'
+  toolchain:
+    name: 'host'
+    path: ''
+  zephyr:
+    version: '4.4.0'
+    zephyr-base: '/home/penia/zephyr_workspace/deps/zephyr'
+version: '0.1.0'
